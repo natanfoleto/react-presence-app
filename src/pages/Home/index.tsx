@@ -2,34 +2,35 @@ import { useEffect, useState } from "react";
 
 import "./styles.css";
 
-import { Card } from "../../components/Card";
+import { Card, CardProps } from "../../components/Card";
+
+interface ProfileResponse {
+  name: string;
+  avatar_url: string;
+}
+
+interface User {
+  name: string;
+  avatar: string;
+}
 
 function Home() {
-  const [user, setUser] = useState({ name: "", avatar: "" });
-  const [students, setStudents] = useState([]);
-  const [studentName, setStudentName] = useState();
+  const [user, setUser] = useState<User>({} as User);
+  const [students, setStudents] = useState<CardProps[]>([]);
+  const [studentName, setStudentName] = useState("");
 
   useEffect(() => {
-    fetch("https://api.github.com/users/natanfoleto")
-      .then((response) => response.json())
-      .then((data) => {
-        setUser({
-          name: data.name,
-          avatar: data.avatar_url,
-        });
+    async function fetchData() {
+      const response = await fetch("https://api.github.com/users/natanfoleto");
+      const data = (await response.json()) as ProfileResponse;
+
+      setUser({
+        name: data.name,
+        avatar: data.avatar_url,
       });
+    }
 
-    // async function fetchData() {
-    //   const response = await fetch("https://api.github.com/users/natanfoleto");
-    //   const data = await response.json();
-
-    //   setUser({
-    //     name: data.name,
-    //     avatar: data.avatar_url,
-    //   });
-    // }
-
-    // fetchData();
+    fetchData();
   }, []);
 
   function handleAddStudent() {
@@ -42,7 +43,7 @@ function Home() {
       }),
     };
 
-    setStudents([...students, newStudent]);
+    setStudents((prevState) => [...prevState, newStudent]);
   }
 
   return (
