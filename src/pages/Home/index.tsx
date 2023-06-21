@@ -62,7 +62,13 @@ function Home() {
         placeholder="Digite o nome ..."
         onChange={(e) => setStudentName(e.target.value)}
       />
-      <button onClick={handleAddStudent}>Adicionar</button>
+
+      <button 
+        onClick={handleAddStudent}
+        disabled={!studentName}
+      >
+        Adicionar
+      </button>
 
       {students.map((student) => (
         <Card key={student.time} name={student.name} time={student.time} />
