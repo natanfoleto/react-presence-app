@@ -10,26 +10,17 @@ function Home() {
   const [studentName, setStudentName] = useState();
 
   useEffect(() => {
-    fetch("https://api.github.com/users/natanfoleto")
-      .then((response) => response.json())
-      .then((data) => {
-        setUser({
-          name: data.name,
-          avatar: data.avatar_url,
-        });
+    async function fetchData() {
+      const response = await fetch("https://api.github.com/users/natanfoleto");
+      const data = await response.json();
+
+      setUser({
+        name: data.name,
+        avatar: data.avatar_url,
       });
+    }
 
-    // async function fetchData() {
-    //   const response = await fetch("https://api.github.com/users/natanfoleto");
-    //   const data = await response.json();
-
-    //   setUser({
-    //     name: data.name,
-    //     avatar: data.avatar_url,
-    //   });
-    // }
-
-    // fetchData();
+    fetchData();
   }, []);
 
   function handleAddStudent() {
